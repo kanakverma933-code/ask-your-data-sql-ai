@@ -6,9 +6,6 @@ What this script does :
 3. Gemini replies with a SQL query.
 4. We run that query on the database.
 5. We print the result.
-
-No Streamlit, no test file, no fancy safety checks yet.
-Just the core idea working end to end, so lets understand every step.
 """
 
 import os
@@ -18,7 +15,7 @@ import google.generativeai as genai
 import mysql.connector
 from dotenv import load_dotenv
 
-# Step 0: Load secret keys from the .env file
+# Load secret keys from the .env file
 load_dotenv() 
 print("DB_USER loaded as:", os.getenv("DB_USER"))
 print("DB_HOST loaded as:", os.getenv("DB_HOST"))
@@ -36,7 +33,7 @@ TABLE_NAME = "zomato_restaurants"
 
 # Keywords that should never appear in a query we run.
 # This is a second layer of protection, on top of the database
-# user already being read-only.
+
 FORBIDDEN_KEYWORDS = ["insert", "update", "delete", "drop", "alter", "truncate", "create", "grant", "revoke"]
  
  
@@ -106,7 +103,7 @@ print(sql_query)
 
 
 
-# Step 4: Check the SQL is safe before running it
+# Check the SQL is safe before running it
 is_safe, reason = check_sql_is_safe(sql_query)
 if not is_safe:
     print(f"\nBLOCKED - not running this query. Reason: {reason}")
